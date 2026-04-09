@@ -539,7 +539,7 @@ export default function OrbitScreen() {
       {/* ── HUD Bar ── */}
       <Animated.View style={[styles.hudBar, hudStyle, { opacity: hudOp.current }]}>
         <View style={styles.hudLeft}>
-          <Text style={styles.hudLabel}>H₂</Text>
+          <Text style={styles.hudLabel}>ENERGY</Text>
           <Text style={styles.hudValue}>{h2Display.toLocaleString()}</Text>
           {h2PerTurn > 0 && <Text style={styles.hudRate}>+{h2PerTurn}/turn</Text>}
         </View>
@@ -548,7 +548,7 @@ export default function OrbitScreen() {
           <Text style={styles.hudInfluence}>INF  {influenceScore}</Text>
         </View>
         <View style={styles.hudRight}>
-          <Text style={styles.hudLabel}>Rm</Text>
+          <Text style={styles.hudLabel}>RARE</Text>
           <Text style={[styles.hudValue, { color: rareMetals > 0 ? '#ffd580' : '#2a4a5a' }]}>
             {rareMetals}
           </Text>
@@ -1278,14 +1278,14 @@ export default function OrbitScreen() {
             </View>
             <View style={styles.initHeaderRight}>
               <View style={styles.initHudItem}>
-                <Text style={styles.initHudLabel}>H₂</Text>
-                <Text style={styles.initHudValue}>{h2Display.toLocaleString()}</Text>
-              </View>
-              <View style={styles.initHudItem}>
-                <Text style={styles.initHudLabel}>Rm</Text>
-                <Text style={[styles.initHudValue, { color: rareMetals > 0 ? '#ffd580' : '#4a5a6a' }]}>
-                  {rareMetals}
-                </Text>
+              <Text style={styles.initHudLabel}>ENERGY</Text>
+              <Text style={styles.initHudValue}>{h2Display.toLocaleString()}</Text>
+            </View>
+            <View style={styles.initHudItem}>
+              <Text style={styles.initHudLabel}>RARE</Text>
+              <Text style={[styles.initHudValue, { color: rareMetals > 0 ? '#ffd580' : '#4a5a6a' }]}>
+                {rareMetals}
+              </Text>
               </View>
               <View style={styles.initHudItem}>
                 <Text style={styles.initHudLabel}>ERA</Text>
@@ -1370,7 +1370,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   hudLeft:  { flex: 1, alignItems: 'flex-start' },
-  hudCenter:{ flex: 2, alignItems: 'center' },
+  hudCenter:{ flex: 2, alallignItems: 'center' },
   hudRight: { flex: 1, alignItems: 'flex-end' },
   hudLabel: { color: '#a8d8ff', fontSize: 14, letterSpacing: 2, fontFamily: 'Open Sans' },
   hudValue: { color: '#a8d8ff', fontSize: 18, fontWeight: '700', letterSpacing: 1, fontFamily: 'Open Sans' },
