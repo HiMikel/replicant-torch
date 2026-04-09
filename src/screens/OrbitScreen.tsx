@@ -788,77 +788,82 @@ export default function OrbitScreen() {
         </View>
       </View>
 
-      {/* ── Background star tap overlays ── */}
-      {STARS.map((s) => (
-        <TouchableOpacity
-          key={`ov-${s.name}`}
-          style={[styles.starOverlay, { left: s.x - 18, top: s.y - 18 }]}
-          onPress={() => { setFocusedStar(s.name); setModalStar(s); }}
-          onPressIn={() => setFocusedStar(s.name)}
-          onPressOut={() => setFocusedStar(null)}
-          {...hover(() => setFocusedStar(s.name), () => setFocusedStar(null))}
-          activeOpacity={0.6}
-        />
-      ))}
+      {/* ── Hide all tap overlays during intro phase to prevent blocking the button ── */}
+      {phase !== 'intro' && (
+        <>
+          {/* ── Background star tap overlays ── */}
+          {STARS.map((s) => (
+            <TouchableOpacity
+              key={`ov-${s.name}`}
+              style={[styles.starOverlay, { left: s.x - 18, top: s.y - 18 }]}
+              onPress={() => { setFocusedStar(s.name); setModalStar(s); }}
+              onPressIn={() => setFocusedStar(s.name)}
+              onPressOut={() => setFocusedStar(null)}
+              {...hover(() => setFocusedStar(s.name), () => setFocusedStar(null))}
+              activeOpacity={0.6}
+            />
+          ))}
 
-      {/* ── Proxima orbit path tap overlays ── */}
-      {/* Rendered c→b→d so innermost (d) sits on top for web hover hit detection */}
-      <TouchableOpacity
-        style={[styles.orbitPCOverlay, { left: CX - PC_RX - 50, top: CY - PC_RY - 50 }]}
-        onPress={() => { setFocusedPlanet('c'); setSelectedPlanet('c'); }}
-        onPressIn={() => setFocusedPlanet('c')}
-        onPressOut={() => setFocusedPlanet(null)}
-        {...hover(() => setFocusedPlanet('c'), () => setFocusedPlanet(null))}
-        activeOpacity={0.6}
-      />
-      <TouchableOpacity
-        style={[styles.orbitPBOverlay, { left: CX - PB_RX - 40, top: CY - PB_RY - 40 }]}
-        onPress={() => { setFocusedPlanet('b'); setSelectedPlanet('b'); }}
-        onPressIn={() => setFocusedPlanet('b')}
-        onPressOut={() => setFocusedPlanet(null)}
-        {...hover(() => setFocusedPlanet('b'), () => setFocusedPlanet(null))}
-        activeOpacity={0.6}
-      />
-      <TouchableOpacity
-        style={[styles.orbitPDOverlay, { left: CX - PD_RX - 30, top: CY - PD_RY - 30 }]}
-        onPress={() => { setFocusedPlanet('d'); setSelectedPlanet('d'); }}
-        onPressIn={() => setFocusedPlanet('d')}
-        onPressOut={() => setFocusedPlanet(null)}
-        {...hover(() => setFocusedPlanet('d'), () => setFocusedPlanet(null))}
-        activeOpacity={0.6}
-      />
-
-      {/* ── Planet tap overlays (Proxima d/b/c) ── */}
-      {(['d','b','c'] as ProximaPlanet[]).map((id) => {
-        const p = planets[id];
-        return (
+          {/* ── Proxima orbit path tap overlays ── */}
+          {/* Rendered c→b→d so innermost (d) sits on top for web hover hit detection */}
           <TouchableOpacity
-            key={`pov-${id}`}
-            style={[styles.planetOverlay, { left: p.x - 28, top: p.y - 28 }]}
-            onPress={() => { setFocusedPlanet(id); setSelectedPlanet(id); }}
-            onPressIn={() => setFocusedPlanet(id)}
+            style={[styles.orbitPCOverlay, { left: CX - PC_RX - 50, top: CY - PC_RY - 50 }]}
+            onPress={() => { setFocusedPlanet('c'); setSelectedPlanet('c'); }}
+            onPressIn={() => setFocusedPlanet('c')}
             onPressOut={() => setFocusedPlanet(null)}
-            {...hover(() => setFocusedPlanet(id), () => setFocusedPlanet(null))}
+            {...hover(() => setFocusedPlanet('c'), () => setFocusedPlanet(null))}
             activeOpacity={0.6}
           />
-        );
-      })}
+          <TouchableOpacity
+            style={[styles.orbitPBOverlay, { left: CX - PB_RX - 40, top: CY - PB_RY - 40 }]}
+            onPress={() => { setFocusedPlanet('b'); setSelectedPlanet('b'); }}
+            onPressIn={() => setFocusedPlanet('b')}
+            onPressOut={() => setFocusedPlanet(null)}
+            {...hover(() => setFocusedPlanet('b'), () => setFocusedPlanet(null))}
+            activeOpacity={0.6}
+          />
+          <TouchableOpacity
+            style={[styles.orbitPDOverlay, { left: CX - PD_RX - 30, top: CY - PD_RY - 30 }]}
+            onPress={() => { setFocusedPlanet('d'); setSelectedPlanet('d'); }}
+            onPressIn={() => setFocusedPlanet('d')}
+            onPressOut={() => setFocusedPlanet(null)}
+            {...hover(() => setFocusedPlanet('d'), () => setFocusedPlanet(null))}
+            activeOpacity={0.6}
+          />
 
-      {/* ── Proxima Centauri star tap overlay (larger hit area) ── */}
-      <View style={[StyleSheet.absoluteFill, { zIndex: 50 }]}>
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            left: CX - PLANET_R - 30,
-            top: CY - PLANET_R - 30,
-            width: PLANET_R * 2 + 60,
-            height: PLANET_R * 2 + 60,
-          }}
-          onPress={() => setProximaOpen(true)}
-          {...hover(() => setProximaFocused(true), () => setProximaFocused(false))}
-          activeOpacity={1}
-        />
-      </View>
+          {/* ── Planet tap overlays (Proxima d/b/c) ── */}
+          {(['d','b','c'] as ProximaPlanet[]).map((id) => {
+            const p = planets[id];
+            return (
+              <TouchableOpacity
+                key={`pov-${id}`}
+                style={[styles.planetOverlay, { left: p.x - 28, top: p.y - 28 }]}
+                onPress={() => { setFocusedPlanet(id); setSelectedPlanet(id); }}
+                onPressIn={() => setFocusedPlanet(id)}
+                onPressOut={() => setFocusedPlanet(null)}
+                {...hover(() => setFocusedPlanet(id), () => setFocusedPlanet(null))}
+                activeOpacity={0.6}
+              />
+            );
+          })}
+
+          {/* ── Proxima Centauri star tap overlay (larger hit area) ── */}
+          <View style={[StyleSheet.absoluteFill, { zIndex: 50 }]}>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                left: CX - PLANET_R - 30,
+                top: CY - PLANET_R - 30,
+                width: PLANET_R * 2 + 60,
+                height: PLANET_R * 2 + 60,
+              }}
+              onPress={() => setProximaOpen(true)}
+              {...hover(() => setProximaFocused(true), () => setProximaFocused(false))}
+              activeOpacity={1}
+            />
+          </View>
+        </>
+      )}
 
       {/* ── Intro ── */}
       {phase === 'intro' && (
@@ -1506,6 +1511,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#1e3a5a', borderTopWidth: 1,
     paddingHorizontal: 24, paddingTop: 20, paddingBottom: 44,
     maxHeight: height * 0.72,
+    zIndex: 200,
   },
   modalHeader: {
     flexDirection: 'row',
