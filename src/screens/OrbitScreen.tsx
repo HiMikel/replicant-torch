@@ -1281,43 +1281,51 @@ export default function OrbitScreen() {
             </TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <TouchableOpacity style={[styles.choiceBtn, styles.choiceStation]}
-              onPress={() => { setDirective('station'); setH2(prev => prev - 600); setInitModalOpen(false); startInitSequence(); }}>
-              <Text style={styles.choiceLabel}>⬡  SETUP STATION</Text>
-              <Text style={styles.choiceUpside}>+ Passive H₂ +12/turn  ·  System Influence +5/turn</Text>
-              <Text style={styles.choiceUpside}>+ Enables Research Station — tech tree unlocked</Text>
-              <Text style={styles.choiceUpside}>+ Rare Metal extraction becomes possible</Text>
-              <Text style={styles.choiceDownside}>− Costs 600 H₂ to anchor  ·  Takes 3 turns to build</Text>
-              <Text style={styles.choiceDownside}>− No new drones until Station is online</Text>
+            <TouchableOpacity style={[styles.choiceBtn, styles.choiceDrone]}
+              onPress={() => { setDirective('printer'); setH2(prev => prev - 200); setInitModalOpen(false); startInitSequence(); }}>
+              <Text style={styles.choiceLabel}>◉  PRINT DRONES</Text>
+              <Text style={styles.choiceUpside}>+ Print 2 drones immediately  ·  +8 H₂/turn added</Text>
+              <Text style={styles.choiceUpside}>+ Printer enabled for later production  ·  No Station</Text>
+              <Text style={styles.choiceDownside}>− Costs 200 H₂ upfront  ·  Takes 1 turn</Text>
+              <Text style={styles.choiceDownside}>− No passive income  ·  Rare Metals until Era 2</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={[styles.choiceBtn, styles.choicePrinter]}
-              onPress={() => { setDirective('printer'); setH2(prev => prev - 800); setInitModalOpen(false); startInitSequence(); }}>
+              onPress={() => { setDirective('printer'); setH2(prev => prev - 350); setInitModalOpen(false); startInitSequence(); }}>
               <Text style={styles.choiceLabel}>◈  PRINT PRINTER</Text>
-              <Text style={styles.choiceUpside}>+ Print a second Printer for parallel production</Text>
-              <Text style={styles.choiceUpside}>+ Enables faster replication in mid-game</Text>
-              <Text style={styles.choiceDownside}>− Costs 800 H₂ upfront  ·  No passive income</Text>
-              <Text style={styles.choiceDownside}>− Takes 3 turns to build</Text>
-              <Text style={styles.choiceDownside}>− Rare Metals inaccessible until Era 2</Text>
+              <Text style={styles.choiceUpside}>+ Enables parallel drone production  ·  Build queue open</Text>
+              <Text style={styles.choiceUpside}>+ Faster mid-game expansion capability</Text>
+              <Text style={styles.choiceDownside}>− Costs 350 H₂ upfront  ·  No drones or passive income</Text>
+              <Text style={styles.choiceDownside}>− Takes 2 turns  ·  No tech research</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.choiceBtn, styles.choiceDrone]}
-              onPress={() => { setDirective('printer'); setH2(prev => prev - 400); setInitModalOpen(false); startInitSequence(); }}>
-              <Text style={styles.choiceLabel}>◉  PRINT DRONES</Text>
-              <Text style={styles.choiceUpside}>+ Print 2 drones immediately  ·  +8 H₂/turn added</Text>
-              <Text style={styles.choiceUpside}>+ Faster expansion  ·  More systems reachable sooner</Text>
-              <Text style={styles.choiceDownside}>− Costs 400 H₂ upfront  ·  Existing Printer used</Text>
-              <Text style={styles.choiceDownside}>− No tech research until a Station is built later</Text>
-              <Text style={styles.choiceDownside}>− Rare Metals inaccessible until Era 2</Text>
+            <TouchableOpacity style={[styles.choiceBtn, styles.choiceStation]}
+              onPress={() => { setDirective('station'); setH2(prev => prev - 500); setInitModalOpen(false); startInitSequence(); }}>
+              <Text style={styles.choiceLabel}>⬡  PRINT STATION</Text>
+              <Text style={styles.choiceUpside}>+ Passive H₂ +12/turn  ·  System Influence +5/turn</Text>
+              <Text style={styles.choiceUpside}>+ Enables Research Station — tech tree unlocked</Text>
+              <Text style={styles.choiceUpside}>+ Rare Metal extraction possible</Text>
+              <Text style={styles.choiceDownside}>− Costs 500 H₂ to anchor  ·  Takes 3 turns to build</Text>
+              <Text style={styles.choiceDownside}>− No new drones until Station is online</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[styles.choiceBtn, styles.choiceProbe]}
+              onPress={() => { setDirective('printer'); setH2(prev => prev - 1800); setInitModalOpen(false); startInitSequence(); }}>
+              <Text style={styles.choiceLabel}>◊  PRINT TORCH</Text>
+              <Text style={styles.choiceUpside}>+ 4 Drones + Printer  ·  Full expansion package</Text>
+              <Text style={styles.choiceUpside}>+ Ready for immediate system exploration</Text>
+              <Text style={styles.choiceDownside}>− Costs 1,800 H₂  ·  Takes 3 turns to assemble</Text>
+              <Text style={styles.choiceDownside}>− No Station  ·  Must build research later</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={[styles.choiceBtn, styles.choiceProbe]}
               onPress={() => { setDirective('station'); setH2(prev => prev - 2200); setInitModalOpen(false); startInitSequence(); }}>
-              <Text style={styles.choiceLabel}>◊  LAUNCH PROBE</Text>
-              <Text style={styles.choiceUpside}>+ Station + Printer + 4 Drones  ·  Full expansion package</Text>
-              <Text style={styles.choiceUpside}>+ Immediately expand to a new star system</Text>
+              <Text style={styles.choiceLabel}>◊  PRINT TORCH + STATION</Text>
+              <Text style={styles.choiceUpside}>+ 4 Drones + Printer + Station  ·  Maximum starting power</Text>
+              <Text style={styles.choiceUpside}>+ Station comes online with 2 Drones  ·  Full research enabled</Text>
+              <Text style={styles.choiceUpside}>+ Immediately expand to new star systems</Text>
               <Text style={styles.choiceDownside}>− Costs 2,200 H₂  ·  The "go wide" nuclear option</Text>
-              <Text style={styles.choiceDownside}>− Requires rebuilding local economy first</Text>
+              <Text style={styles.choiceDownside}>− Requires rebuilding local economy after</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
