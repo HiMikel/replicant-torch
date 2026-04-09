@@ -1280,6 +1280,23 @@ export default function OrbitScreen() {
               <Text style={styles.closeTxt}>✕</Text>
             </TouchableOpacity>
           </View>
+          {/* ── Resource HUD for modal ── */}
+          <View style={styles.initHudBar}>
+            <View style={styles.initHudItem}>
+              <Text style={styles.initHudLabel}>H₂</Text>
+              <Text style={styles.initHudValue}>{h2Display.toLocaleString()}</Text>
+            </View>
+            <View style={styles.initHudItem}>
+              <Text style={styles.initHudLabel}>Rm</Text>
+              <Text style={[styles.initHudValue, { color: rareMetals > 0 ? '#ffd580' : '#4a5a6a' }]}>
+                {rareMetals}
+              </Text>
+            </View>
+            <View style={styles.initHudItem}>
+              <Text style={styles.initHudLabel}>ERA</Text>
+              <Text style={styles.initHudValue}>{era}</Text>
+            </View>
+          </View>
           <ScrollView showsVerticalScrollIndicator={false}>
             <TouchableOpacity style={[styles.choiceBtn, styles.choiceDrone]}
               onPress={() => { setDirective('printer'); setH2(prev => prev - 200); setInitModalOpen(false); startInitSequence(); }}>
@@ -1364,6 +1381,21 @@ const styles = StyleSheet.create({
   hudEra:   { color: '#a8d8ff', fontSize: 14, letterSpacing: 2, marginTop: 2, fontFamily: 'Open Sans' },
   infoBtn:  { paddingLeft: 16 },
   infoBtnText:{ color: '#a8d8ff', fontSize: 20, fontFamily: 'Open Sans' },
+
+  // Init modal HUD
+  initHudBar: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    gap: 24,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    backgroundColor: 'rgba(10,20,35,0.8)',
+    borderRadius: 4,
+    marginBottom: 12,
+  },
+  initHudItem: { alignItems: 'center' },
+  initHudLabel: { color: '#4a6a8a', fontSize: 11, letterSpacing: 2, fontFamily: 'Open Sans' },
+  initHudValue: { color: '#a8d8ff', fontSize: 16, fontWeight: '700', letterSpacing: 1, fontFamily: 'Open Sans' },
 
   overlay: {
     ...StyleSheet.absoluteFillObject,
