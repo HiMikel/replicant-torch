@@ -540,6 +540,7 @@ export default function OrbitScreen() {
       <Animated.View style={[styles.hudBar, hudStyle, { opacity: hudOp.current }]}>
         <View style={styles.hudLeft}>
           <Text style={styles.hudLabel}>ENERGY</Text>
+          <Text style={styles.hudSubLabel}>H2</Text>
           <Text style={styles.hudValue}>{h2Display.toLocaleString()}</Text>
           {h2PerTurn > 0 && <Text style={styles.hudRate}>+{h2PerTurn}/turn</Text>}
         </View>
@@ -549,9 +550,11 @@ export default function OrbitScreen() {
         </View>
         <View style={styles.hudRight}>
           <Text style={styles.hudLabel}>RARE</Text>
+          <Text style={styles.hudSubLabel}>METALS</Text>
           <Text style={[styles.hudValue, { color: rareMetals > 0 ? '#ffd580' : '#2a4a5a' }]}>
             {rareMetals}
           </Text>
+          <Text style={styles.hudPhase}>PHASE</Text>
           <Text style={styles.hudEra}>ERA {era}</Text>
         </View>
         {/* Info button */}
@@ -1370,11 +1373,13 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   hudLeft:  { flex: 1, alignItems: 'flex-start' },
-  hudCenter:{ flex: 2, alallignItems: 'center' },
+  hudCenter:{ flex: 2, alignItems: 'center' },
   hudRight: { flex: 1, alignItems: 'flex-end' },
   hudLabel: { color: '#a8d8ff', fontSize: 14, letterSpacing: 2, fontFamily: 'Open Sans' },
+  hudSubLabel: { color: '#4a6a8a', fontSize: 11, letterSpacing: 2, fontFamily: 'Open Sans' },
   hudValue: { color: '#a8d8ff', fontSize: 18, fontWeight: '700', letterSpacing: 1, fontFamily: 'Open Sans' },
   hudRate:  { color: '#a8d8ff', fontSize: 15, letterSpacing: 1, fontFamily: 'Open Sans' },
+  hudPhase: { color: '#4a6a8a', fontSize: 11, letterSpacing: 2, fontFamily: 'Open Sans' },
   hudSystem:{ color: '#a8d8ff', fontSize: 15, letterSpacing: 2, fontFamily: 'Open Sans' },
   hudInfluence:{ color: '#a8d8ff', fontSize: 14, letterSpacing: 1, marginTop: 2, fontFamily: 'Open Sans' },
   hudEra:   { color: '#a8d8ff', fontSize: 14, letterSpacing: 2, marginTop: 2, fontFamily: 'Open Sans' },
