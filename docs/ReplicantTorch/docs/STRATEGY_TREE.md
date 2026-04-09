@@ -557,6 +557,89 @@ The collapse timer creates genuine stake: the deeper you push into a Rift Node, 
 
 ---
 
+## Starting Map — Proxima Centauri System
+
+The Torch arrives in the **Proxima Centauri system** — the closest star to Earth at 4.25 light years. A red dwarf of spectral class M5.5: 12.5% of the Sun's mass, 14% of its diameter, and only 0.16% of its luminosity. Nearly all output is infrared. What it lacks in light it makes up for in violence — flares can reach 1,000x the star's normal brightness, spike to 27 million K, and shower the inner system with X-rays and UV. Flare events are periodic, unpredictable, and damaging.
+
+### The Star
+
+| Property | Value |
+|----------|-------|
+| Type | M5.5 red dwarf |
+| Mass | 12.5% of Sun |
+| Diameter | 14% of Sun |
+| Luminosity | 0.16% of Sun (mostly infrared) |
+| Flare Activity | Extreme — up to 1,000x quiescent brightness |
+| Radiation | High X-ray and UV during flares — damages unshielded drones and Solar Arrays |
+
+### Orbital Bodies
+
+| Body | Orbital Period | Orbital Radius | Mass | Spectral Class | Rotation | Notes |
+|------|---------------|----------------|------|---------------|----------|-------|
+| **Proxima d** | 5.1 days | 0.029 AU | 0.26 Earth | B | Tidally locked | Innermost; one face permanently toward star |
+| **Proxima b** | 11.2 days | 0.048 AU | 1.055 Earth | A | Tidally locked | Habitable zone; permanent day/night sides |
+| **Proxima c** | ~1,900 days | 1.489 AU | Unknown | Unknown | Unknown | Disputed — appears as anomaly signal in outer system |
+
+Both confirmed planets are on **perfectly circular orbits** and almost certainly **tidally locked** — one hemisphere permanently facing the star, one permanently dark.
+
+### Tidal Locking — Strategic Implications
+
+| Zone | Condition | Resource / Tactical Implication |
+|------|-----------|----------------------------------|
+| **Day side** | Constant stellar radiation; periodic flare spikes | Solar Arrays highly efficient — but flare events deal damage to unshielded drones |
+| **Night side** | Permanent darkness, extreme cold | Shielded from radiation; stable long-term mining zone |
+| **Terminator ring** | Narrow twilight band between day and night | Most stable conditions; optimal zone for Station placement |
+
+### Proxima c — The Unknown Signal
+
+Proxima c has never been confirmed. It appears in the outer system as a **Class Unknown anomaly signal** detectable by Era 1 Scout drones — an unresolved spectral signature at ~1.5 AU. What it is remains unknown until a Scout surveys it:
+- A frozen outer body (disputed, may not exist)
+- A dense Rare Metal deposit from an ancient stellar event
+- Something else entirely
+
+### Star System Info Card
+
+When a player clicks on the Proxima Centauri system node, the info card displays:
+
+| Field | Value |
+|-------|-------|
+| Star Type | M5.5 Red Dwarf |
+| Mass | 0.125 M☉ |
+| Diameter | 0.14 D☉ |
+| Luminosity | 0.0016 L☉ |
+| Flare Risk | High |
+| Known Bodies | 2 confirmed + 1 anomaly signal |
+| Power Grid Bonus | None (standard) |
+
+### Torch Starting Position
+
+The Torch enters on an elliptical orbit crossing between b and c:
+- **Perihelion** (close pass): near Proxima d and b — fast access to Raw Materials
+- **Aphelion** (far pass): near Proxima c signal — anomaly survey range
+
+### Resource Collection
+
+Once a drone is assigned to a collection point it gathers automatically each turn — no manual dispatching required. The Power Grid updates continuously as drones work.
+
+### Recommended Turn 1 Deployment
+
+| Drone | Assigned To | Reason |
+|-------|-------------|--------|
+| Gatherer 1 | Proxima b (night side) | Raw Materials — shielded from flare damage |
+| Gatherer 2 | Proxima b (night side) | Second drone doubles early build rate |
+| Gatherer 3 | Proxima b (terminator) | Hydrogen extraction from ice deposits in twilight zone |
+| Scout 1 | Proxima d | Surveys Class B deposit; marks Rare Metal trace for Era 2 revisit |
+
+### What You Can See But Can't Touch Yet
+
+- **Proxima d** Rare Metal trace visible on survey — locked until Era 2 Gatherer
+- **Proxima c signal** detectable at ~1.5 AU — nature unknown until Scout surveys it
+- Era 1 drones mining d return Raw Materials only; heavy elements swept out as slag
+
+Every Class B–D deposit is worth revisiting. Nothing is wasted — you just don't have the tools yet.
+
+---
+
 ## Win Conditions
 
 ### Expansion Victory
