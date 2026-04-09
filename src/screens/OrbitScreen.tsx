@@ -1272,29 +1272,28 @@ export default function OrbitScreen() {
         <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setInitModalOpen(false)} />
         <View style={[styles.modalSheet, { zIndex: 60, pointerEvents: 'auto' }]}>
           <View style={styles.modalHeader}>
-            <View>
+            <View style={styles.initHeaderLeft}>
               <Text style={styles.modalTitle}>INITIALIZE TORCH</Text>
               <Text style={styles.modalSub}>Select primary directive to begin</Text>
             </View>
-            <TouchableOpacity onPress={() => setInitModalOpen(false)} style={styles.closeBtn}>
-              <Text style={styles.closeTxt}>✕</Text>
-            </TouchableOpacity>
-          </View>
-          {/* ── Resource HUD for modal ── */}
-          <View style={styles.initHudBar}>
-            <View style={styles.initHudItem}>
-              <Text style={styles.initHudLabel}>H₂</Text>
-              <Text style={styles.initHudValue}>{h2Display.toLocaleString()}</Text>
-            </View>
-            <View style={styles.initHudItem}>
-              <Text style={styles.initHudLabel}>Rm</Text>
-              <Text style={[styles.initHudValue, { color: rareMetals > 0 ? '#ffd580' : '#4a5a6a' }]}>
-                {rareMetals}
-              </Text>
-            </View>
-            <View style={styles.initHudItem}>
-              <Text style={styles.initHudLabel}>ERA</Text>
-              <Text style={styles.initHudValue}>{era}</Text>
+            <View style={styles.initHeaderRight}>
+              <View style={styles.initHudItem}>
+                <Text style={styles.initHudLabel}>H₂</Text>
+                <Text style={styles.initHudValue}>{h2Display.toLocaleString()}</Text>
+              </View>
+              <View style={styles.initHudItem}>
+                <Text style={styles.initHudLabel}>Rm</Text>
+                <Text style={[styles.initHudValue, { color: rareMetals > 0 ? '#ffd580' : '#4a5a6a' }]}>
+                  {rareMetals}
+                </Text>
+              </View>
+              <View style={styles.initHudItem}>
+                <Text style={styles.initHudLabel}>ERA</Text>
+                <Text style={styles.initHudValue}>{era}</Text>
+              </View>
+              <TouchableOpacity onPress={() => setInitModalOpen(false)} style={styles.closeBtn}>
+                <Text style={styles.closeTxt}>✕</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -1396,6 +1395,8 @@ const styles = StyleSheet.create({
   initHudItem: { alignItems: 'center' },
   initHudLabel: { color: '#4a6a8a', fontSize: 11, letterSpacing: 2, fontFamily: 'Open Sans' },
   initHudValue: { color: '#a8d8ff', fontSize: 16, fontWeight: '700', letterSpacing: 1, fontFamily: 'Open Sans' },
+  initHeaderLeft: { flex: 1 },
+  initHeaderRight: { flexDirection: 'row', alignItems: 'flex-start', gap: 16 },
 
   overlay: {
     ...StyleSheet.absoluteFillObject,
