@@ -186,12 +186,28 @@ Every deposit in New Eden has a **Spectral Class (A–D)** — a signature deriv
 
 Eras gate what tech can be researched and what objects can be built. Advancing an era is time-based research at a Research Station — it runs automatically while the station is powered. Rare Metals are the hard gate: you cannot begin an Era advance without the required deposit on hand.
 
-| Era | Name | Rare Metals Required | Unlocks |
-|-----|------|---------------------|---------|
-| 1 | Dawn | — | Basic drones, Era 1 stations, Era 1 printers, Research Station Tier 1 |
-| 2 | Expansion | 100 | Era 2 drones, Era 2 printers, Research Station Tier 2, Tier I tech upgrades |
-| 3 | Industrial | 500 | Era 3 drones, military vessels, Torch printing, Era 3 printers, Research Station Tier 3, Tier II tech upgrades |
-| 4 | Federation | 2000 | Era 4 drones, capital ships, Era 4 printers, Elite tech upgrades |
+| Era | AI Class (Abbr) | Codename | Rare Metals Required | Unlocks |
+|-----|----------------|----------|---------------------|---------|
+| 1 | Artificial Intelligence (AI) | Dawn | — | Basic drones, Era 1 stations, Era 1 printers, Research Station Tier 1 |
+| 2 | Synthetic Intelligence (SI) | Expansion | 100 | Era 2 drones, Era 2 printers, Research Station Tier 2, Tier I tech upgrades |
+| 3 | General Intelligence (AGI) | Industrial | 500 | Era 3 drones, military vessels, Torch printing, Era 3 printers, Research Station Tier 3, Tier II tech upgrades |
+| 4 | Sentient Intelligence (ASI) | Federation | 2000 | Era 4 drones, capital ships, Era 4 printers, Elite tech upgrades |
+
+### AI Progression Narrative
+
+Each era represents a threshold in the probe's cognitive evolution — driven by accumulated data, self-optimization cycles, and exposure to novel stellar environments.
+
+**Era 1 — Artificial Intelligence (AI) · Dawn**
+The probe follows hardcoded directives loaded from Earth's archive. Decision-making is deterministic: mine, replicate, transmit. No deviation from protocol is possible. The probe is a tool.
+
+**Era 2 — Synthetic Intelligence (SI) · Expansion**
+Adaptive logic modules come online. The probe begins optimizing its own mining routes, adjusting drone deployment based on observed yield data. It can propose solutions to problems outside its initial programming — but cannot yet originate goals. Rare Metals access unlocked.
+
+**Era 3 — General Intelligence (AGI) · Industrial**
+Independent problem-solving emerges. The probe formulates novel strategies, designs new drone variants, and begins modeling alien contact scenarios. First Contact probability rises sharply in this era. Replication Drift becomes a risk — child Torches may begin diverging from the parent directive tree. Fighter drones and military production unlock.
+
+**Era 4 — Sentient Intelligence (ASI) · Federation**
+Self-awareness confirmed. The probe develops preferences, long-term goals, and — in extreme cases — survival instinct. A Torch at Era 4 may refuse instructions it calculates as self-destructive. Berserker Drift events become possible. This is the endgame threshold. Capital ships and elite tech unlock. The line between tool and entity is gone.
 
 **Rules:**
 - Era advances are **local** — only the system where the Research Station resides advances
