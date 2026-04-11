@@ -2,6 +2,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
+  Image,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -37,7 +38,7 @@ const CX = width / 2;
 const PLANET_R = 96;
 const ORBIT_RX = width * 0.36;
 const ORBIT_RY = width * 0.12;
-const ORBIT_MS = 35000; // ~Proxima b orbital period (32s), probe in habitable zone orbit
+const ORBIT_MS = 42000; // ~Proxima b orbital period, probe in habitable zone orbit
 const HIT_RADIUS = 26;
 
 // ─── Proxima Centauri planet orbit radii ────────────────────────────────────────
@@ -144,7 +145,7 @@ const PROXIMA_DATA: Record<ProximaPlanet, ProxPlanetInfo> = {
     status: "Confirmed 2022 · Validated 2025",
     statusColor: "#4aaa6a",
     color: "#d98050",
-    radius: 2, // Orange for metal/rocky planet
+    radius: 8, // Orange for metal/rocky planet
     rows: [
       { label: "ORBIT PERIOD", value: "5.1 days" },
       { label: "DISTANCE", value: "0.029 AU", note: "~4.3 million km" },
@@ -169,7 +170,7 @@ const PROXIMA_DATA: Record<ProximaPlanet, ProxPlanetInfo> = {
     status: "Confirmed 2016 · Revalidated 2025",
     statusColor: "#4aaa6a",
     color: "#4a8aaa",
-    radius: 5,
+    radius: 13,
     rows: [
       { label: "ORBIT PERIOD", value: "11.2 days" },
       { label: "DISTANCE", value: "0.048 AU", note: "~7.25 million km" },
@@ -198,7 +199,7 @@ const PROXIMA_DATA: Record<ProximaPlanet, ProxPlanetInfo> = {
     status: "Confirmed · Outer System",
     statusColor: "#a8d8ff",
     color: "#b8a0e0",
-    radius: 14, // Purple/lavender for ice planet
+    radius: 20, // Purple/lavender for ice planet
     rows: [
       { label: "ORBIT PERIOD", value: "5.2 years" },
       { label: "DISTANCE", value: "1.5 AU" },
@@ -396,6 +397,23 @@ const PLANET_ZONE: { type: string; h2: string; note: string; color: string }[] =
     },
   ];
 
+const PLANET_IMAGE: Record<string, any> = {
+  Scorched: require("../assets/planets/Scorched.png"),
+  Rocky: require("../assets/planets/Rocky.png"),
+  Terrestrial: require("../assets/planets/Terrestrial.png"),
+  Arid: require("../assets/planets/Arid.png"),
+  "Gas Giant": require("../assets/planets/GasGiant.png"),
+  "Ice Giant": require("../assets/planets/IceGiant.png"),
+  Frozen: require("../assets/planets/Frozen.png"),
+  "Ocean World": require("../assets/planets/OceanWorld.png"),
+};
+
+const PROXIMA_IMAGE: Record<string, any> = {
+  d: require("../assets/planets/Scorched.png"),
+  b: require("../assets/planets/Terrestrial.png"),
+  c: require("../assets/planets/Frozen.png"),
+};
+
 type Planet = {
   name: string;
   type: string;
@@ -566,7 +584,6 @@ const NARRATIVE_EVENTS = [
     text: "DEPLOYING INITIAL DRONE FLEET",
     sub: "4 units standing by for mining operations",
   },
-  { text: "SELECT PRIMARY DIRECTIVE", sub: null },
 ];
 
 type Phase =
@@ -714,17 +731,21 @@ export default function OrbitScreen() {
   }, [h2]);
 
   function startInitSequence() {
+    fadeOut(setIntroStyle, introOp, 400);
     setInitPhase(0);
-    const delays = [800, 1800, 2800, 3800, 5000, 6200, 7500];
+    const delays = [800, 1800, 2800, 3800, 5000, 6200];
     delays.forEach((delay, idx) => {
       setTimeout(() => {
         setInitPhase(idx);
         if (idx === delays.length - 1) {
-          // Last event - show the decision panel after narrative ends
+          // Give time to read last text, clear narrative, then show deploy panel
           setTimeout(() => {
-            setPhase("deploy");
-            fadeIn(setDeployStyle, deployOp, 700);
-          }, 600);
+            setInitPhase(-1);
+            setTimeout(() => {
+              setPhase("deploy");
+              fadeIn(setDeployStyle, deployOp, 700);
+            }, 500);
+          }, 1800);
         }
       }, delay);
     });
@@ -768,7 +789,7 @@ export default function OrbitScreen() {
 
 Current mission status:
 - System: Proxima Centauri (4.24 ly from Earth)
-- Era: ${era} — ${ERA_DATA[era - 1].aiClass} (${ERA_DATA[era - 1].codename})
+- Era: ERA · ${ERA_DATA[era - 1].abbr} (${ERA_DATA[era - 1].codename})
 - H₂ Energy Reserve: ${h2.toLocaleString()} units
 - Rare Metals: ${rareMetals}
 - Influence Score: ${influenceScore}
@@ -811,36 +832,37 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
       <Animated.View
         style={[styles.hudBar, hudStyle, { opacity: hudOp.current }]}
       >
-        <View style={styles.hudLeft}>
-          <Text style={styles.hudLabel}>ENERGY</Text>
-          <Text style={styles.hudSubLabel}>H2</Text>
-          <Text style={styles.hudValue}>{h2Display.toLocaleString()}</Text>
-          {h2PerTurn > 0 && (
-            <Text style={styles.hudRate}>+{h2PerTurn}/turn</Text>
-          )}
+        <View
+          style={{ flexDirection: "row", alignItems: "flex-start", gap: 28 }}
+        >
+          <View style={styles.hudLeft}>
+            <Text style={styles.hudLabel}>ENERGY</Text>
+            <Text style={styles.hudSubLabel}>H2</Text>
+            <Text style={styles.hudValue}>{h2Display.toLocaleString()}</Text>
+            {h2PerTurn > 0 && (
+              <Text style={styles.hudRate}>+{h2PerTurn}/turn</Text>
+            )}
+          </View>
+          <View style={styles.hudLeft}>
+            <Text style={styles.hudLabel}>RARE</Text>
+            <Text style={styles.hudSubLabel}>METALS</Text>
+            <Text style={styles.hudValue}>{rareMetals}</Text>
+            <Text style={styles.hudRate}>+0/turn</Text>
+          </View>
         </View>
         <View style={styles.hudCenter}>
           <Text style={styles.hudSystem}>PROXIMA CENTAURI</Text>
-          <Text style={styles.hudInfluence}>INF {influenceScore}</Text>
         </View>
-        <View style={styles.hudRight}>
-          <Text style={styles.hudLabel}>RARE</Text>
-          <Text style={styles.hudSubLabel}>METALS</Text>
-          <Text
-            style={[
-              styles.hudValue,
-              { color: rareMetals > 0 ? "#ffd580" : "#2a4a5a" },
-            ]}
+        {/* AI button + ERA */}
+        <View style={{ alignItems: "center", paddingLeft: 10 }}>
+          <TouchableOpacity
+            style={styles.aiBtn}
+            onPress={() => setAiOpen(true)}
           >
-            {rareMetals}
-          </Text>
-          <Text style={styles.hudPhase}>ERA {era}</Text>
-          <Text style={styles.hudEra}>{ERA_DATA[era - 1].aiClass}</Text>
+            <Text style={styles.aiBtnText}>AXIOM</Text>
+          </TouchableOpacity>
+          <Text style={styles.hudEra}>ERA · {ERA_DATA[era - 1].abbr}</Text>
         </View>
-        {/* AI button */}
-        <TouchableOpacity style={styles.aiBtn} onPress={() => setAiOpen(true)}>
-          <Text style={styles.aiBtnText}>AI</Text>
-        </TouchableOpacity>
         {/* Info button */}
         <TouchableOpacity
           style={styles.infoBtn}
@@ -858,27 +880,10 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
         pointerEvents="none"
       >
         <Defs>
-          {/* Red dwarf star - orange-red with dark surface spots */}
-          <RadialGradient id={idPlanet} cx="50%" cy="50%" r="55%">
-            <Stop offset="0%" stopColor="#ff8040" stopOpacity="1" />
-            <Stop offset="25%" stopColor="#cc5020" stopOpacity="1" />
-            <Stop offset="50%" stopColor="#8a3010" stopOpacity="1" />
-            <Stop offset="75%" stopColor="#5a2008" stopOpacity="1" />
-            <Stop offset="100%" stopColor="#2a1004" stopOpacity="1" />
-          </RadialGradient>
-          {/* Corona glow - deep red/orange */}
-          <RadialGradient id={idAtmos} cx="50%" cy="50%" r="50%">
-            <Stop offset="0%" stopColor="#ff4010" stopOpacity="0.3" />
-            <Stop offset="50%" stopColor="#cc2000" stopOpacity="0.15" />
-            <Stop offset="100%" stopColor="#000000" stopOpacity="0" />
-          </RadialGradient>
           <RadialGradient id={idBg} cx="50%" cy="50%" r="70%">
             <Stop offset="0%" stopColor="#000000" stopOpacity="1" />
             <Stop offset="100%" stopColor="#000000" stopOpacity="1" />
           </RadialGradient>
-          <ClipPath id={`${idBg}clip`}>
-            <Circle cx={CX} cy={CY} r={PLANET_R} />
-          </ClipPath>
         </Defs>
 
         {/* Background */}
@@ -891,13 +896,12 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
 
         {/* Star image — bottom z-index, circular clip */}
         <SvgImage
-          href={require("../assets/RedDwarf.png")}
-          x={CX - PLANET_R}
-          y={CY - PLANET_R}
-          width={PLANET_R * 2}
-          height={PLANET_R * 2}
-          clipPath={`url(#${idBg}clip)`}
-          preserveAspectRatio="xMidYMid slice"
+          href={require("../assets/suns/RedDwarf.png")}
+          x={CX - PLANET_R * 2.66}
+          y={CY - PLANET_R * 2.66}
+          width={PLANET_R * 5.32}
+          height={PLANET_R * 5.32}
+          preserveAspectRatio="xMidYMid meet"
         />
 
         {/* Background stars */}
@@ -998,7 +1002,7 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
           rx={PD_RX}
           ry={PD_RY}
           fill="none"
-          stroke="#d98050"
+          stroke="#ff8040"
           strokeWidth={focusedPlanet === "d" ? 2.5 : 1}
           strokeOpacity={focusedPlanet === "d" ? 1 : 0.45}
           strokeDasharray={focusedPlanet === "d" ? "5 3" : "4 4"}
@@ -1009,7 +1013,7 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
           rx={PB_RX}
           ry={PB_RY}
           fill="none"
-          stroke="#4a8aaa"
+          stroke="#60a0ff"
           strokeWidth={focusedPlanet === "b" ? 2.5 : 1}
           strokeOpacity={focusedPlanet === "b" ? 1 : 0.45}
           strokeDasharray={focusedPlanet === "b" ? "5 3" : "4 4"}
@@ -1020,7 +1024,7 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
           rx={PC_RX}
           ry={PC_RY}
           fill="none"
-          stroke="#b8a0e0"
+          stroke="#c8b8ff"
           strokeWidth={focusedPlanet === "c" ? 2.5 : 1}
           strokeOpacity={focusedPlanet === "c" ? 1 : 0.4}
           strokeDasharray={focusedPlanet === "c" ? "5 3" : "4 4"}
@@ -1059,20 +1063,13 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
                 />
               )}
               {/* Planet body */}
-              <Circle
-                cx={p.x}
-                cy={p.y}
-                r={pd.radius + (isFocused ? 1 : 0)}
-                fill={pd.color}
-              />
-              <Circle
-                cx={p.x}
-                cy={p.y}
-                r={pd.radius + 3}
-                fill="none"
-                stroke={pd.color}
-                strokeWidth={isFocused ? 1.5 : 0.5}
-                opacity={isFocused ? 0.9 : 0.25}
+              <SvgImage
+                href={PROXIMA_IMAGE[id]}
+                x={p.x - pd.radius}
+                y={p.y - pd.radius}
+                width={pd.radius * 2}
+                height={pd.radius * 2}
+                preserveAspectRatio="xMidYMid meet"
               />
               {/* Invisible larger hit area for hover */}
               <Circle
@@ -1103,15 +1100,6 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
           );
         })}
 
-        {/* Soft energy glow — diffuse, no hard ring */}
-        <Circle
-          cx={CX}
-          cy={CY}
-          r={PLANET_R + 55}
-          fill={`url(#${idAtmos})`}
-          opacity={0.55}
-        />
-
         {/* Tap target for Proxima Centauri star */}
         <Circle
           cx={CX}
@@ -1139,20 +1127,16 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
 
         {/* ── Orbiting probe ── */}
         <G transform={`translate(${probe.x}, ${probe.y}) rotate(${probe.deg})`}>
-          <Circle
-            r={16}
-            fill="none"
-            stroke="#a8d8ff"
-            strokeWidth={1}
-            opacity={0.18}
-          />
-          <Circle cx={-9} cy={0} r={3} fill="#3366ff" opacity={0.55} />
-          <Circle cx={-9} cy={0} r={1.5} fill="#88aaff" opacity={0.8} />
-          <Path d="M 2 -2 L -7 -12 L -6 -3 Z" fill="#5a8aaa" opacity={0.95} />
-          <Path d="M 2 2 L -7 12 L -6 3 Z" fill="#5a8aaa" opacity={0.95} />
-          <Path d="M 11 0 L -3 -4 L -6 0 L -3 4 Z" fill="#d0eaff" />
-          <Circle cx={6} cy={0} r={2} fill="#88ddff" opacity={0.85} />
-          <Circle cx={6} cy={0} r={1} fill="#ffffff" opacity={0.5} />
+          <G transform="rotate(-90)">
+            <SvgImage
+              href={require("../assets/ships/PrometheusDown.png")}
+              x={-18}
+              y={-18}
+              width={36}
+              height={36}
+              preserveAspectRatio="xMidYMid meet"
+            />
+          </G>
         </G>
       </Svg>
 
@@ -1168,32 +1152,11 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
             onPress={() => setProbeOpen(true)}
             activeOpacity={0.7}
           >
-            <Svg width={72} height={72} viewBox="-14 -14 28 28">
-              <G transform="rotate(270, 0, 0)">
-                <Circle
-                  r={16}
-                  fill="none"
-                  stroke="#a8d8ff"
-                  strokeWidth={1}
-                  opacity={0.18}
-                />
-                <Circle cx={-9} cy={0} r={3} fill="#3366ff" opacity={0.55} />
-                <Circle cx={-9} cy={0} r={1.5} fill="#88aaff" opacity={0.8} />
-                <Path
-                  d="M 2 -2 L -7 -12 L -6 -3 Z"
-                  fill="#5a8aaa"
-                  opacity={0.95}
-                />
-                <Path
-                  d="M 2 2 L -7 12 L -6 3 Z"
-                  fill="#5a8aaa"
-                  opacity={0.95}
-                />
-                <Path d="M 11 0 L -3 -4 L -6 0 L -3 4 Z" fill="#d0eaff" />
-                <Circle cx={6} cy={0} r={2} fill="#88ddff" opacity={0.85} />
-                <Circle cx={6} cy={0} r={1} fill="#ffffff" opacity={0.5} />
-              </G>
-            </Svg>
+            <Image
+              source={require("../assets/ships/PrometheusUp.png")}
+              style={{ width: 80, height: 80 }}
+              resizeMode="contain"
+            />
           </TouchableOpacity>
           <Text style={[styles.shipType, { textAlign: "center" }]}>
             TORCH-1
@@ -1731,7 +1694,47 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
                   ]}
                 >
                   <View style={styles.planetRow}>
-                    <Text style={styles.planetName}>{p.name}</Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 10,
+                      }}
+                    >
+                      <Image
+                        source={PLANET_IMAGE[p.type] ?? PLANET_IMAGE["Rocky"]}
+                        style={{
+                          width:
+                            (
+                              {
+                                Scorched: 22,
+                                Rocky: 26,
+                                Arid: 26,
+                                Terrestrial: 30,
+                                "Ocean World": 30,
+                                Frozen: 24,
+                                "Ice Giant": 44,
+                                "Gas Giant": 72,
+                              } as Record<string, number>
+                            )[p.type] ?? 28,
+                          height:
+                            (
+                              {
+                                Scorched: 22,
+                                Rocky: 26,
+                                Arid: 26,
+                                Terrestrial: 30,
+                                "Ocean World": 30,
+                                Frozen: 24,
+                                "Ice Giant": 44,
+                                "Gas Giant": 72,
+                              } as Record<string, number>
+                            )[p.type] ?? 28,
+                        }}
+                        resizeMode="contain"
+                      />
+                      <Text style={styles.planetName}>{p.name}</Text>
+                    </View>
                     <Text style={styles.planetType}>{p.type}</Text>
                   </View>
                   <View style={styles.planetRow}>
@@ -1768,13 +1771,28 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
             return (
               <View style={styles.modalSheet}>
                 <View style={styles.modalHeader}>
-                  <View>
-                    <Text style={styles.modalTitle}>
-                      {pd.label.toUpperCase()}
-                    </Text>
-                    <Text style={[styles.modalSub, { color: pd.statusColor }]}>
-                      {pd.status}
-                    </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 14,
+                    }}
+                  >
+                    <Image
+                      source={PROXIMA_IMAGE[selectedPlanet]}
+                      style={{ width: 52, height: 52 }}
+                      resizeMode="contain"
+                    />
+                    <View>
+                      <Text style={styles.modalTitle}>
+                        {pd.label.toUpperCase()}
+                      </Text>
+                      <Text
+                        style={[styles.modalSub, { color: pd.statusColor }]}
+                      >
+                        {pd.status}
+                      </Text>
+                    </View>
                   </View>
                   <TouchableOpacity
                     onPress={() => setSelectedPlanet(null)}
@@ -1989,8 +2007,9 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
                 </Text>
               </View>
               <View style={styles.initHudItem}>
-                <Text style={styles.initHudLabel}>ERA {era}</Text>
-                <Text style={styles.initHudSub}>{ERA_DATA[era - 1].abbr}</Text>
+                <Text style={styles.initHudLabel}>
+                  ERA · {ERA_DATA[era - 1].abbr}
+                </Text>
                 <Text style={styles.initHudValue}>
                   {ERA_DATA[era - 1].codename}
                 </Text>
@@ -2154,8 +2173,7 @@ Speak concisely with calm intelligence. You are the ship's strategic advisor. Re
               <View>
                 <Text style={styles.modalTitle}>TORCH AI</Text>
                 <Text style={styles.modalSub}>
-                  Onboard Intelligence · Era {era} —{" "}
-                  {ERA_DATA[era - 1].codename}
+                  Onboard Intelligence · ERA · {ERA_DATA[era - 1].abbr}
                 </Text>
               </View>
               <TouchableOpacity
@@ -2249,51 +2267,51 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: 50,
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-    backgroundColor: "rgba(5,8,16,0.85)",
-    borderBottomColor: "#1a2a3a",
+    paddingTop: 4,
+    paddingHorizontal: 14,
+    paddingBottom: 5,
+    backgroundColor: "rgba(4,12,28,0.93)",
+    borderBottomColor: "#1e4060",
     borderBottomWidth: 1,
     zIndex: 100,
   },
-  hudLeft: { flex: 1, alignItems: "flex-start" },
-  hudCenter: { flex: 2, alignItems: "center" },
+  hudLeft: { alignItems: "flex-start" },
+  hudCenter: { flex: 1, alignItems: "center" },
   hudRight: { flex: 1, alignItems: "flex-end" },
   hudLabel: {
-    color: "#a8d8ff",
-    fontSize: 14,
-    letterSpacing: 2,
+    color: "#60a0ff",
+    fontSize: 9,
+    letterSpacing: 1,
     fontFamily: "Open Sans",
   },
   hudSubLabel: {
-    color: "#4a6a8a",
-    fontSize: 11,
-    letterSpacing: 2,
+    color: "#4a90d9",
+    fontSize: 8,
+    letterSpacing: 1,
     fontFamily: "Open Sans",
   },
   hudValue: {
     color: "#a8d8ff",
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: "700",
-    letterSpacing: 1,
+    letterSpacing: 0,
     fontFamily: "Open Sans",
   },
   hudRate: {
-    color: "#a8d8ff",
-    fontSize: 15,
+    color: "#60a0ff",
+    fontSize: 10,
     letterSpacing: 1,
     fontFamily: "Open Sans",
   },
   hudPhase: {
-    color: "#4a6a8a",
-    fontSize: 11,
-    letterSpacing: 2,
+    color: "#4a90d9",
+    fontSize: 8,
+    letterSpacing: 1,
     fontFamily: "Open Sans",
   },
   hudSystem: {
-    color: "#a8d8ff",
-    fontSize: 18,
+    color: "#60a0ff",
+    fontSize: 11,
     letterSpacing: 2,
     fontFamily: "Open Sans",
   },
@@ -2305,14 +2323,14 @@ const styles = StyleSheet.create({
     fontFamily: "Open Sans",
   },
   hudEra: {
-    color: "#a8d8ff",
-    fontSize: 14,
-    letterSpacing: 2,
+    color: "#4a90d9",
+    fontSize: 8,
+    letterSpacing: 1,
     marginTop: 2,
     fontFamily: "Open Sans",
   },
-  infoBtn: { paddingLeft: 16 },
-  infoBtnText: { color: "#a8d8ff", fontSize: 20, fontFamily: "Open Sans" },
+  infoBtn: { paddingLeft: 10 },
+  infoBtnText: { color: "#a8d8ff", fontSize: 14, fontFamily: "Open Sans" },
 
   // Init modal HUD
   initHudBar: {
@@ -2679,10 +2697,10 @@ const styles = StyleSheet.create({
   },
   shipContainer: {
     position: "absolute",
-    top: 52,
+    bottom: 24,
     right: 20,
     alignItems: "flex-end",
-    zIndex: 110,
+    zIndex: 50,
   },
   shipName: {
     color: "#60a0ff",
@@ -2906,10 +2924,10 @@ const styles = StyleSheet.create({
   warning: { color: "#a8d8ff" },
 
   // AI chat button
-  aiBtn: { paddingLeft: 12 },
+  aiBtn: { paddingLeft: 0 },
   aiBtnText: {
     color: "#60a0ff",
-    fontSize: 14,
+    fontSize: 10,
     letterSpacing: 2,
     fontWeight: "700",
     fontFamily: "Open Sans",
